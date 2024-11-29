@@ -62,7 +62,7 @@ class HttpService {
     Map<String, String>? headers,
     dynamic body,
   }) async {
-    var response = sslClient().Response('', 400);
+    var response = http.Response('', 400);
 
     switch (method) {
       case HttpMethod.get:
