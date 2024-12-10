@@ -4,8 +4,8 @@ version = "1.3.5"
 authors = ["rustdesk <info@rustdesk.com>"]
 edition = "2021"
 build= "build.rs"
-description = "teamdesk Remote Desktop"
-default-run = "teamdesk"
+description = "rustdesk Remote Desktop"
+default-run = "rustdesk"
 rust-version = "1.75"
 
 [lib]
@@ -13,7 +13,7 @@ name = "librustdesk"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
-name = "teamdesk"
+name = "rustdesk"
 path = "src/naming.rs"
 
 [features]
@@ -175,9 +175,9 @@ exclude = ["vdi/host", "examples/custom_plugin"]
 
 [package.metadata.winres]
 LegalCopyright = "Copyright © 2024 Purslane Ltd. All rights reserved."
-ProductName = "TeamDesk"
-FileDescription = "TeamDesk Remote Desktop"
-OriginalFilename = "teamdesk.exe"
+ProductName = "RustDesk"
+FileDescription = "RustDesk Remote Desktop"
+OriginalFilename = "rustdesk.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
 winres = "0.1"
@@ -192,8 +192,8 @@ os-version = "0.2"
 hound = "3.5"
 
 [package.metadata.bundle]
-name = "TeamDesk"
-identifier = "com.carriez.teamdesk"
+name = "RustDesk"
+identifier = "com.carriez.rustdesk"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"
 
