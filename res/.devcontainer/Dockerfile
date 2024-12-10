@@ -24,7 +24,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup.sh
 RUN chmod +x rustup.sh
 RUN $HOME/rustup.sh -y
 RUN $HOME/.cargo/bin/rustup target add aarch64-linux-android
-RUN $HOME/.cargo/bin/cargo install cargo-ndk
+RUN $HOME/.cargo/bin/cargo install --force --locked cargo-ndk
 
 # Install Flutter
 RUN wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.10.1-stable.tar.xz
