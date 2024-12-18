@@ -1,15 +1,6 @@
 name: ci2
  
 on:
-  workflow_dispatch:
-    workflow_call:
-    inputs:
-      upload-artifact:
-        type: boolean
-        default: true
-      upload-tag:
-        type: string
-        default: "nightly"
   pull_request:
     paths-ignore:
       - "docs/**"
@@ -44,7 +35,7 @@ env:
   ANDROID_FLUTTER_VERSION: "3.24.5"
   # for arm64 linux because official Dart SDK does not work
   FLUTTER_ELINUX_VERSION: "3.16.9"
-  TAG_NAME: "${{ inputs.upload-tag }}"
+  TAG_NAME: "night-version"
   VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
   # vcpkg version: 2024.07.12
   VCPKG_COMMIT_ID: "1de2026f28ead93ff1773e6e680387643e914ea1"
@@ -57,47 +48,11 @@ env:
   RS_PUB_KEY: "${{ secrets.RS_PUB_KEY }}"
   RENDEZVOUS_SERVER: "${{ secrets.RENDEZVOUS_SERVER }}"
   API_SERVER: "${{ secrets.API_SERVER }}"
-  UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
+  UPLOAD_ARTIFACT: "true"
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}"
 
 jobs:
-  # ensure_cargo_fmt:
-  #   name: Ensure 'cargo fmt' has been run
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #   - uses: actions-rs/toolchain@v1
-  #     with:
-  #       toolchain: stable
-  #       default: true
-  #       profile: minimal
-  #       components: rustfmt
-  #   - uses: actions/checkout@v3
-  #   - run: cargo fmt -- --check
 
-  # min_version:
-  #   name: Minimum supported rust version
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #   - name: Checkout source code
-  #     uses: actions/checkout@v3
-
-  #   - name: Install rust toolchain (v${{ env.MIN_SUPPORTED_RUST_VERSION }})
-  #     uses: actions-rs/toolchain@v1
-  #     with:
-  #       toolchain: ${{ env.MIN_SUPPORTED_RUST_VERSION }}
-  #       default: true
-  #       profile: minimal # minimal component installation (ie, no documentation)
-  #       components: clippy
-  #   - name: Run clippy (on minimum supported rust version to prevent warnings we can't fix)
-  #     uses: actions-rs/cargo@v1
-  #     with:
-  #       command: clippy
-  #       args: --locked --all-targets --all-features -- --allow clippy::unknown_clippy_lints
-  #   - name: Run tests
-  #     uses: actions-rs/cargo@v1
-  #     with:
-  #       command: test
-  #       args: --locked
   generate-bridge:
     uses: ./.github/workflows/bridge.yml
 
@@ -135,39 +90,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Import the codesign cert
-        if: env.MACOS_P12_BASE64 != null
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.MACOS_P12_BASE64 }}
-          p12-password: ${{ secrets.MACOS_P12_PASSWORD }}
-          keychain: rustdesk
-
-      - name: Check sign and import sign key
-        if: env.MACOS_P12_BASE64 != null
-        run: |
-          security default-keychain -s rustdesk.keychain
-          security find-identity -v
-
-      - name: Import notarize key
-        if: env.MACOS_P12_BASE64 != null
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          # https://gregoryszorc.com/docs/apple-codesign/stable/apple_codesign_rcodesign.html#notarizing-and-stapling
-          fileName: rustdesk.json
-          fileDir: ${{ github.workspace }}
-          encodedString: ${{ secrets.MACOS_NOTARIZE_JSON }}
-
-      - name: Install rcodesign tool
-        if: env.MACOS_P12_BASE64 != null
-        shell: bash
-        run: |
-          pushd /tmp
-          wget https://github.com/indygreg/apple-platform-rs/releases/download/apple-codesign%2F0.22.0/apple-codesign-0.22.0-macos-universal.tar.gz
-          tar -zxvf apple-codesign-0.22.0-macos-universal.tar.gz
-          mv apple-codesign-0.22.0-macos-universal/rcodesign /usr/local/bin
-          popd
-
+      
       - name: Install build runtime
         run: |
           brew install llvm create-dmg nasm cmake gcc wget ninja
@@ -273,23 +196,12 @@ jobs:
           path: rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.dmg # can not upload the directory directly or tar.gz, which destroy the link structure, causing the codesign failed
 
       - name: Codesign app and create signed dmg
-        if: env.selfsign == 'true' && env.UPLOAD_ARTIFACT == 'true'
+        if: env.SELFSIGN == 'true' 
         run: |
-          # Patch create-dmg to give more attempts to unmount image
-          # CREATE_DMG="$(command -v create-dmg)"
-          # CREATE_DMG="$(readlink -f "$CREATE_DMG")"
-          # sed -i -e 's/MAXIMUM_UNMOUNTING_ATTEMPTS=3/MAXIMUM_UNMOUNTING_ATTEMPTS=7/' "$CREATE_DMG"
-          # # Unlock keychain
-          # security default-keychain -s rustdesk.keychain
-          # security unlock-keychain -p ${{ secrets.MACOS_P12_PASSWORD }} rustdesk.keychain
-          # start sign the rustdesk.app and dmg
           rm -rf *.dmg || true
           codesign --force - -s  --deep --strict ./flutter/build/macos/Build/Products/Release/RustDesk.app -vvv
           create-dmg --icon "RustDesk.app" 200 190 --hide-extension "RustDesk.app" --window-size 800 400 --app-drop-link 600 185 rustdesk-${{ env.VERSION }}.dmg ./flutter/build/macos/Build/Products/Release/RustDesk.app
-          # codesign --force --options runtime -s ${{ secrets.MACOS_CODESIGN_IDENTITY }} --deep --strict rustdesk-${{ env.VERSION }}.dmg -vvv
-          # notarize the rustdesk-${{ env.VERSION }}.dmg
-          # rcodesign notary-submit --api-key-path ${{ github.workspace }}/rustdesk.json  --staple rustdesk-${{ env.VERSION }}.dmg
-
+          
       - name: Rename rustdesk
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
