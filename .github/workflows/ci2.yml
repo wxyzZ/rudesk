@@ -1,7 +1,8 @@
 name: ci2
-
+ 
 on:
-  workflow_call:
+  workflow_dispatch:
+    workflow_call:
     inputs:
       upload-artifact:
         type: boolean
@@ -9,6 +10,20 @@ on:
       upload-tag:
         type: string
         default: "nightly"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - ".github/**"
+      - "docs/**"
+      - "README.md"
+      - "res/**"
+      - "appimage/**"
+      - "flatpak/**"
 
 # NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
 # variables from this workflow!
