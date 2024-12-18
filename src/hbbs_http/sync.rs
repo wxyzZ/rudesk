@@ -9,6 +9,7 @@ use crate::{ui_interface::get_builtin_option, Connection};
 use hbb_common::{
     config::{keys, Config, LocalConfig},
     tokio::{self, sync::broadcast, time::Instant},
+    log,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
