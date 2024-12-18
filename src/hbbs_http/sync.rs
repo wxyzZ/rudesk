@@ -58,9 +58,11 @@ async fn start_hbbs_sync_async() {
     let mut last_sent: Option<Instant> = None;
     let mut info_uploaded: (bool, String, Option<Instant>, String) =
         (false, "".to_owned(), None, "".to_owned());
+    log::debug!("#wxyz of sync service 1");
     loop {
         tokio::select! {
             _ = interval.tick() => {
+                log::debug!("#wxyz of sync service 2");
                 let url = heartbeat_url();
                 let id = Config::get_id();
                 if url.is_empty() {
@@ -77,12 +79,14 @@ async fn start_hbbs_sync_async() {
                 }
                 if !info_uploaded.0 && info_uploaded.2.map(|x| x.elapsed() >= UPLOAD_SYSINFO_TIMEOUT).unwrap_or(true) {
                     let mut v = crate::get_sysinfo();
+                    log::debug!("#wxyz of sync service 3");
                     // username is empty in login screen of windows, but here we only upload sysinfo once, causing
                     // real user name not uploaded after login screen. https://github.com/rustdesk/rustdesk/discussions/8031
                     if !cfg!(windows) || !v["username"].as_str().unwrap_or_default().is_empty() {
                         v["version"] = json!(crate::VERSION);
                         v["id"] = json!(id);
                         v["uuid"] = json!(crate::encode64(hbb_common::get_uuid()));
+                        log::debug!("#wxyz of sync service 4");
                         let ab_name = Config::get_option(keys::OPTION_PRESET_ADDRESS_BOOK_NAME);
                         if !ab_name.is_empty() {
                             v[keys::OPTION_PRESET_ADDRESS_BOOK_NAME] = json!(ab_name);
