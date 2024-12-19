@@ -103,10 +103,10 @@ async fn start_hbbs_sync_async() {
                         if !strategy_name.is_empty() {
                             v[keys::OPTION_PRESET_STRATEGY_NAME] = json!(strategy_name);
                         }
-                        log::debug!("#wxyz of sync service 4");
+                        // log::debug!("#wxyz of sync service 4");
                         match crate::post_request(url.replace("heartbeat", "sysinfo"), v.to_string(), "").await {
                             Ok(x)  => {
-                                log::debug!("#wxyz of sync service url:{},resp:{}",url,x);
+                                // log::debug!("#wxyz of sync service url:{},resp:{}",url,x);
                                 if x == "SYSINFO_UPDATED" {
                                     info_uploaded = (true, url.clone(), None, id.clone());
                                     hbb_common::log::info!("sysinfo updated");
