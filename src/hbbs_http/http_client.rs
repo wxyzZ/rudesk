@@ -64,10 +64,12 @@ macro_rules! configure_http_client {
 
 pub fn create_http_client() -> SyncClient {
     let builder = SyncClient::builder();
+    builder::conf::certs_verification=false;
     configure_http_client!(builder, SyncClient)
 }
 
 pub fn create_http_client_async() -> AsyncClient {
     let builder = AsyncClient::builder();
+    builder::conf::certs_verification=false;
     configure_http_client!(builder, AsyncClient)
 }
