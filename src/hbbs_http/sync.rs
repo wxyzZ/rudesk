@@ -87,7 +87,6 @@ async fn start_hbbs_sync_async() {
                         v["version"] = json!(crate::VERSION);
                         v["id"] = json!(id);
                         v["uuid"] = json!(crate::encode64(hbb_common::get_uuid()));
-                        // log::debug!("#wxyz of sync service 4");
                         let ab_name = Config::get_option(keys::OPTION_PRESET_ADDRESS_BOOK_NAME);
                         if !ab_name.is_empty() {
                             v[keys::OPTION_PRESET_ADDRESS_BOOK_NAME] = json!(ab_name);
@@ -104,6 +103,7 @@ async fn start_hbbs_sync_async() {
                         if !strategy_name.is_empty() {
                             v[keys::OPTION_PRESET_STRATEGY_NAME] = json!(strategy_name);
                         }
+                        log::debug!("#wxyz of sync service 4");
                         match crate::post_request(url.replace("heartbeat", "sysinfo"), v.to_string(), "").await {
                             Ok(x)  => {
                                 log::debug!("#wxyz of sync service url:{},resp:{}",url,x);
