@@ -7,6 +7,7 @@ use reqwest::Client as AsyncClient;
 macro_rules! configure_http_client {
     ($builder:expr, $Client: ty) => {{
         let mut builder = $builder;
+        builder = builder.danger_accept_invalid_certs(true);
         let client = if let Some(conf) = Config::get_socks() {
             let proxy_result = Proxy::from_conf(&conf, None);
 
@@ -64,13 +65,10 @@ macro_rules! configure_http_client {
 
 pub fn create_http_client() -> SyncClient {
     let builder = SyncClient::builder();
-    builder.danger_accept_invalid_certs(true);
     configure_http_client!(builder, SyncClient)
 }
 
 pub fn create_http_client_async() -> AsyncClient {
     let builder = AsyncClient::builder();
-    // builder::conf::certs_verification=false;
-    builder.danger_accept_invalid_certs(true);
     configure_http_client!(builder, AsyncClient)
 }
