@@ -183,6 +183,7 @@ jobs:
       - name: create unsigned dmg
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
+          mv ./flutter/build/macos/Build/Products/Release/RustDesk.app ./flutter/build/macos/Build/Products/Release/homedesk.app
           CREATE_DMG="$(command -v create-dmg)"
           CREATE_DMG="$(readlink -f "$CREATE_DMG")"
           sed -i -e 's/MAXIMUM_UNMOUNTING_ATTEMPTS=3/MAXIMUM_UNMOUNTING_ATTEMPTS=7/' "$CREATE_DMG"
@@ -361,6 +362,7 @@ jobs:
           python3 ./generate.py -f ../../homedesk/ -o . -e ../../homedesk/homedesk.exe
           popd
           mkdir -p ./SignOutput
+          dir /s
           mv ./target/release/homedesk-portable-packer.exe ./SignOutput/homedesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
 
       - name: Add MSBuild to PATH
