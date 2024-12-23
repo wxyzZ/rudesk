@@ -2,8 +2,8 @@
 Name=RustDeskURL Scheme Handler
 NoDisplay=true
 MimeType=x-scheme-handler/rustdesk;
-TryExec=rustdesk
-Exec=rustdesk %u
+TryExec=homedesk
+Exec=homedesk %u
 Icon=rustdesk
 Terminal=false
 Type=Application

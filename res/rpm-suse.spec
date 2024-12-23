@@ -26,19 +26,19 @@ mkdir -p %{buildroot}/usr/share/icons/hicolor/scalable/apps/
 install -m 755 $HBB/target/release/rustdesk %{buildroot}/usr/bin/rustdesk
 install $HBB/libsciter-gtk.so %{buildroot}/usr/lib/rustdesk/libsciter-gtk.so
 install $HBB/res/rustdesk.service %{buildroot}/usr/share/rustdesk/files/
-install $HBB/res/128x128@2x.png %{buildroot}/usr/share/icons/hicolor/256x256/apps/rustdesk.png
-install $HBB/res/scalable.svg %{buildroot}/usr/share/icons/hicolor/scalable/apps/rustdesk.svg
-install $HBB/res/rustdesk.desktop %{buildroot}/usr/share/rustdesk/files/
-install $HBB/res/rustdesk-link.desktop %{buildroot}/usr/share/rustdesk/files/
+install $HBB/res/128x128@2x.png %{buildroot}/usr/share/icons/hicolor/256x256/apps/homedesk.png
+install $HBB/res/scalable.svg %{buildroot}/usr/share/icons/hicolor/scalable/apps/homedesk.svg
+install $HBB/res/homedesk.desktop %{buildroot}/usr/share/rustdesk/files/
+install $HBB/res/homedesk-link.desktop %{buildroot}/usr/share/rustdesk/files/
 
 %files
 /usr/bin/rustdesk
 /usr/lib/rustdesk/libsciter-gtk.so
 /usr/share/rustdesk/files/rustdesk.service
-/usr/share/icons/hicolor/256x256/apps/rustdesk.png
-/usr/share/icons/hicolor/scalable/apps/rustdesk.svg
-/usr/share/rustdesk/files/rustdesk.desktop
-/usr/share/rustdesk/files/rustdesk-link.desktop
+/usr/share/icons/hicolor/256x256/apps/homedesk.png
+/usr/share/icons/hicolor/scalable/apps/homedesk.svg
+/usr/share/rustdesk/files/homedesk.desktop
+/usr/share/rustdesk/files/homedesk-link.desktop
 
 %changelog
 # let's skip this for now
@@ -58,8 +58,8 @@ esac
 
 %post
 cp /usr/share/rustdesk/files/rustdesk.service /etc/systemd/system/rustdesk.service
-cp /usr/share/rustdesk/files/rustdesk.desktop /usr/share/applications/
-cp /usr/share/rustdesk/files/rustdesk-link.desktop /usr/share/applications/
+cp /usr/share/rustdesk/files/homedesk.desktop /usr/share/applications/
+cp /usr/share/rustdesk/files/homedesk-link.desktop /usr/share/applications/
 systemctl daemon-reload
 systemctl enable rustdesk
 systemctl start rustdesk
@@ -82,8 +82,8 @@ esac
 case "$1" in
   0)
     # for uninstall
-    rm /usr/share/applications/rustdesk.desktop || true
-    rm /usr/share/applications/rustdesk-link.desktop || true
+    rm /usr/share/applications/homedesk.desktop || true
+    rm /usr/share/applications/homedesk-link.desktop || true
     update-desktop-database
   ;;
   1)
