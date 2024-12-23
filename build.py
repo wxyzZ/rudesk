@@ -566,12 +566,6 @@ def main():
                 pa = os.environ.get('P')
                 if pa:
                     system2('''
-    # buggy: rcodesign sign ... path/*, have to sign one by one
-    # install rcodesign via cargo install apple-codesign
-    #rcodesign sign --p12-file ~/.p12/rustdesk-developer-id.p12 --p12-password-file ~/.p12/.cert-pass --code-signature-flags runtime ./target/release/bundle/osx/RustDesk.app/Contents/MacOS/rustdesk
-    #rcodesign sign --p12-file ~/.p12/rustdesk-developer-id.p12 --p12-password-file ~/.p12/.cert-pass --code-signature-flags runtime ./target/release/bundle/osx/RustDesk.app/Contents/MacOS/libsciter.dylib
-    #rcodesign sign --p12-file ~/.p12/rustdesk-developer-id.p12 --p12-password-file ~/.p12/.cert-pass --code-signature-flags runtime ./target/release/bundle/osx/RustDesk.app
-    # goto "Keychain Access" -> "My Certificates" for below id which starts with "Developer ID Application:"
     codesign -s "Developer ID Application: {0}" --force --options runtime  ./target/release/bundle/osx/homedesk.app/Contents/MacOS/*
     codesign -s "Developer ID Application: {0}" --force --options runtime  ./target/release/bundle/osx/homedesk.app
     '''.format(pa))
@@ -581,17 +575,8 @@ def main():
                           version, 'homedesk-%s.dmg' % version)
                 if pa:
                     system2('''
-    # https://pyoxidizer.readthedocs.io/en/apple-codesign-0.14.0/apple_codesign.html
-    # https://pyoxidizer.readthedocs.io/en/stable/tugger_code_signing.html
-    # https://developer.apple.com/developer-id/
-    # goto xcode and login with apple id, manager certificates (Developer ID Application and/or Developer ID Installer) online there (only download and double click (install) cer file can not export p12 because no private key)
-    #rcodesign sign --p12-file ~/.p12/rustdesk-developer-id.p12 --p12-password-file ~/.p12/.cert-pass --code-signature-flags runtime ./rustdesk-{1}.dmg
     codesign -s "Developer ID Application: {0}" --force --options runtime ./homedesk-{1}.dmg
-    # https://appstoreconnect.apple.com/access/api
-    # https://gregoryszorc.com/docs/apple-codesign/stable/apple_codesign_getting_started.html#apple-codesign-app-store-connect-api-key
-    # p8 file is generated when you generate api key (can download only once)
     rcodesign notary-submit --api-key-path ../.p12/api-key.json  --staple homedesk-{1}.dmg
-    # verify:  spctl -a -t exec -v /Applications/RustDesk.app
     '''.format(pa, version))
                 else:
                     print('Not signed')
