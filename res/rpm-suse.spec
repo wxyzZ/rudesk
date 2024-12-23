@@ -1,4 +1,4 @@
-Name:       rustdesk
+Name:       homedesk
 Version:    1.1.9
 Release:    0
 Summary:    RPM package
@@ -19,26 +19,26 @@ The best open-source remote desktop client software, written in Rust.
 
 %install
 mkdir -p %{buildroot}/usr/bin/
-mkdir -p %{buildroot}/usr/lib/rustdesk/
-mkdir -p %{buildroot}/usr/share/rustdesk/files/
+mkdir -p %{buildroot}/usr/lib/homedesk/
+mkdir -p %{buildroot}/usr/share/homedesk/files/
 mkdir -p %{buildroot}/usr/share/icons/hicolor/256x256/apps/
 mkdir -p %{buildroot}/usr/share/icons/hicolor/scalable/apps/
-install -m 755 $HBB/target/release/rustdesk %{buildroot}/usr/bin/rustdesk
-install $HBB/libsciter-gtk.so %{buildroot}/usr/lib/rustdesk/libsciter-gtk.so
-install $HBB/res/rustdesk.service %{buildroot}/usr/share/rustdesk/files/
+install -m 755 $HBB/target/release/homedesk %{buildroot}/usr/bin/homedesk
+install $HBB/libsciter-gtk.so %{buildroot}/usr/lib/homedesk/libsciter-gtk.so
+install $HBB/res/homedesk.service %{buildroot}/usr/share/homedesk/files/
 install $HBB/res/128x128@2x.png %{buildroot}/usr/share/icons/hicolor/256x256/apps/homedesk.png
 install $HBB/res/scalable.svg %{buildroot}/usr/share/icons/hicolor/scalable/apps/homedesk.svg
-install $HBB/res/homedesk.desktop %{buildroot}/usr/share/rustdesk/files/
-install $HBB/res/homedesk-link.desktop %{buildroot}/usr/share/rustdesk/files/
+install $HBB/res/homedesk.desktop %{buildroot}/usr/share/homedesk/files/
+install $HBB/res/homedesk-link.desktop %{buildroot}/usr/share/homedesk/files/
 
 %files
-/usr/bin/rustdesk
-/usr/lib/rustdesk/libsciter-gtk.so
-/usr/share/rustdesk/files/rustdesk.service
+/usr/bin/homedesk
+/usr/lib/homedesk/libsciter-gtk.so
+/usr/share/homedesk/files/homedesk.service
 /usr/share/icons/hicolor/256x256/apps/homedesk.png
 /usr/share/icons/hicolor/scalable/apps/homedesk.svg
-/usr/share/rustdesk/files/homedesk.desktop
-/usr/share/rustdesk/files/homedesk-link.desktop
+/usr/share/homedesk/files/homedesk.desktop
+/usr/share/homedesk/files/homedesk-link.desktop
 
 %changelog
 # let's skip this for now
@@ -52,26 +52,26 @@ case "$1" in
   ;;
   2)
     # for upgrade
-    systemctl stop rustdesk || true
+    systemctl stop homedesk || true
   ;;
 esac
 
 %post
-cp /usr/share/rustdesk/files/rustdesk.service /etc/systemd/system/rustdesk.service
-cp /usr/share/rustdesk/files/homedesk.desktop /usr/share/applications/
-cp /usr/share/rustdesk/files/homedesk-link.desktop /usr/share/applications/
+cp /usr/share/homedesk/files/homedesk.service /etc/systemd/system/homedesk.service
+cp /usr/share/homedesk/files/homedesk.desktop /usr/share/applications/
+cp /usr/share/homedesk/files/homedesk-link.desktop /usr/share/applications/
 systemctl daemon-reload
-systemctl enable rustdesk
-systemctl start rustdesk
+systemctl enable homedesk
+systemctl start homedesk
 update-desktop-database
 
 %preun
 case "$1" in
   0)
     # for uninstall
-    systemctl stop rustdesk || true
-    systemctl disable rustdesk || true
-    rm /etc/systemd/system/rustdesk.service || true
+    systemctl stop homedesk || true
+    systemctl disable homedesk || true
+    rm /etc/systemd/system/homedesk.service || true
   ;;
   1)
     # for upgrade
