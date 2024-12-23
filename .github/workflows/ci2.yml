@@ -362,7 +362,7 @@ jobs:
           python3 ./generate.py -f ../../homedesk/ -o . -e ../../homedesk/homedesk.exe
           popd
           mkdir -p ./SignOutput
-          dir /s
+          ls -lr
           mv ./target/release/homedesk-portable-packer.exe ./SignOutput/homedesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
 
       - name: Add MSBuild to PATH
