@@ -1,5 +1,5 @@
 Name:       homedesk
-Version:    1.3.5-2
+Version:    1.3.5.2
 Release:    0
 Summary:    RPM package
 License:    GPL-3.0

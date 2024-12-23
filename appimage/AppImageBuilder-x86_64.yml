@@ -18,7 +18,7 @@ AppDir:
     id: homedesk
     name: homedesk
     icon: homedesk
-    version: 1.3.5-2
+    version: 1.3.5.2
     exec: usr/lib/homedesk/homedesk
     exec_args: $@
   apt:
