@@ -374,7 +374,7 @@ jobs:
           python preprocess.py --arp -d ../../homedesk
           nuget restore msi.sln
           msbuild msi.sln -p:Configuration=Release -p:Platform=x64 /p:TargetVersion=Windows10
-          mv ./Package/bin/x64/Release/en-us/homedesk.msi ../../SignOutput/homedesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
+          mv ./Package/bin/x64/Release/en-us/Package.msi ../../SignOutput/homedesk-${{ env.VERSION }}-${{ matrix.job.arch }}.msi
           sha256sum ../../SignOutput/homedesk-*.msi
 
       - name: Sign rustdesk self-extracted file
