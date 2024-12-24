@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=homedeskURL Scheme Handler
+NoDisplay=true
+MimeType=x-scheme-handler/homedesk;
+TryExec=homedesk
+Exec=homedesk %u
+Icon=homedesk
+Terminal=false
+Type=Application
+StartupNotify=false

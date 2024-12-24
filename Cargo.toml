@@ -1,19 +1,19 @@
 [package]
-name = "rustdesk"
+name = "homedesk"
 version = "1.32.5"
-authors = ["rustdesk <info@rustdesk.com>"]
+authors = ["homedesk <info@homedesk.com>"]
 edition = "2021"
 build= "build.rs"
-description = "rustdesk Remote Desktop"
-default-run = "rustdesk"
+description = "homedesk Remote Desktop"
+default-run = "homedesk"
 rust-version = "1.75"
 
 [lib]
-name = "librustdesk"
+name = "libhomedesk"
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bin]]
-name = "rustdesk"
+name = "homedesk"
 path = "src/naming.rs"
 
 [features]
@@ -175,9 +175,9 @@ exclude = ["vdi/host", "examples/custom_plugin"]
 
 [package.metadata.winres]
 LegalCopyright = "Copyright © 2024 Purslane Ltd. All rights reserved."
-ProductName = "RustDesk"
-FileDescription = "RustDesk Remote Desktop"
-OriginalFilename = "rustdesk.exe"
+ProductName = "homedesk"
+FileDescription = "homedesk Remote Desktop"
+OriginalFilename = "homedesk.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
 winres = "0.1"
@@ -192,8 +192,8 @@ os-version = "0.2"
 hound = "3.5"
 
 [package.metadata.bundle]
-name = "RustDesk"
-identifier = "com.carriez.rustdesk"
+name = "homedesk"
+identifier = "com.carriez.homedesk"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"
 

@@ -1,10 +1,10 @@
 {
-  "id": "com.rustdesk.RustDesk",
+  "id": "com.homedesk.homedesk",
   "runtime": "org.freedesktop.Platform",
   "runtime-version": "23.08",
   "sdk": "org.freedesktop.Sdk",
-  "command": "rustdesk",
-  "icon": "share/icons/hicolor/scalable/apps/rustdesk.svg",
+  "command": "homedesk",
+  "icon": "share/icons/hicolor/scalable/apps/homedesk.svg",
   "modules": [
     "shared-modules/libappindicator/libappindicator-gtk3-12.10.json",
     "xdotool.json",
@@ -23,24 +23,24 @@
       ]
     },
     {
-      "name": "rustdesk",
+      "name": "homedesk",
       "buildsystem": "simple",
       "build-commands": [
-        "bsdtar -zxvf rustdesk.deb",
+        "bsdtar -zxvf homedesk.deb",
         "tar -xvf ./data.tar.xz",
         "cp -r ./usr/*  /app/",
-        "mkdir -p /app/bin && ln -s /app/lib/rustdesk/rustdesk /app/bin/rustdesk",
-        "mv /app/share/applications/rustdesk.desktop /app/share/applications/com.rustdesk.RustDesk.desktop",
-        "mv /app/share/applications/rustdesk-link.desktop /app/share/applications/com.rustdesk.RustDesk-link.desktop",
-        "sed -i '/^Icon=/ c\\Icon=com.rustdesk.RustDesk' /app/share/applications/*.desktop",
-        "mv /app/share/icons/hicolor/scalable/apps/rustdesk.svg /app/share/icons/hicolor/scalable/apps/com.rustdesk.RustDesk.svg",
-        "for size in 16 24 32 48 64 128 256 512; do\n rsvg-convert -w $size -h $size -f png -o $size.png scalable.svg\n install -Dm644 $size.png /app/share/icons/hicolor/${size}x${size}/apps/com.rustdesk.RustDesk.png\n done"
+        "mkdir -p /app/bin && ln -s /app/lib/homedesk/homedesk /app/bin/homedesk",
+        "mv /app/share/applications/homedesk.desktop /app/share/applications/com.homedesk.homedesk.desktop",
+        "mv /app/share/applications/homedesk-link.desktop /app/share/applications/com.homedesk.homedesk-link.desktop",
+        "sed -i '/^Icon=/ c\\Icon=com.homedesk.homedesk' /app/share/applications/*.desktop",
+        "mv /app/share/icons/hicolor/scalable/apps/homedesk.svg /app/share/icons/hicolor/scalable/apps/com.homedesk.homedesk.svg",
+        "for size in 16 24 32 48 64 128 256 512; do\n rsvg-convert -w $size -h $size -f png -o $size.png scalable.svg\n install -Dm644 $size.png /app/share/icons/hicolor/${size}x${size}/apps/com.homedesk.homedesk.png\n done"
       ],
       "cleanup": ["/include", "/lib/pkgconfig", "/share/gtk-doc"],
       "sources": [
         {
           "type": "file",
-          "path": "./rustdesk.deb"
+          "path": "./homedesk.deb"
         },
         {
           "type": "file",
