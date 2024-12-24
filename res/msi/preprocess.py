@@ -511,6 +511,7 @@ if __name__ == "__main__":
 
     app_name = args.app_name
     dist_dir = Path(sys.argv[0]).parent.joinpath(args.dist_dir).resolve()
+    print(app_name)
 
     if not prepare_resources():
         sys.exit(-1)
